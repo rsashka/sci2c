@@ -20,58 +20,65 @@
 
 #include <gtest/gtest.h>
 
-#include <apdu/apdu.h>
+#include "apdu.h"
 
 using android::CommandApdu;
 using android::ResponseApdu;
 
 /* CommandApdu */
 
-TEST(CommandApduTest, Case1) {
+TEST(CommandApduTest, Case1)
+{
     const CommandApdu apdu{1, 2, 3, 4};
     const std::vector<uint8_t> expected{1, 2, 3, 4};
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case2s) {
+TEST(CommandApduTest, Case2s)
+{
     const CommandApdu apdu{4, 3, 2, 1, 0, 3};
     const std::vector<uint8_t> expected{4, 3, 2, 1, 3};
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case2s_maxLe) {
+TEST(CommandApduTest, Case2s_maxLe)
+{
     const CommandApdu apdu{4, 3, 2, 1, 0, 256};
     const std::vector<uint8_t> expected{4, 3, 2, 1, 0};
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case2e) {
+TEST(CommandApduTest, Case2e)
+{
     const CommandApdu apdu{5, 6, 7, 8, 0, 258};
     const std::vector<uint8_t> expected{5, 6, 7, 8, 0, 1, 2};
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case2e_maxLe) {
+TEST(CommandApduTest, Case2e_maxLe)
+{
     const CommandApdu apdu{5, 6, 7, 8, 0, 65536};
     const std::vector<uint8_t> expected{5, 6, 7, 8, 0, 0, 0};
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case3s) {
+TEST(CommandApduTest, Case3s)
+{
     const CommandApdu apdu{8, 7, 6, 5, 5, 0};
     const std::vector<uint8_t> expected{8, 7, 6, 5, 5, 0, 0, 0, 0, 0};
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case3s_data) {
+TEST(CommandApduTest, Case3s_data)
+{
     CommandApdu apdu{8, 7, 6, 5, 3, 0};
-    auto it = apdu.dataBegin();
+    CommandApdu::iterator it = apdu.dataBegin();
     *it++ = 10;
     *it++ = 11;
     *it++ = 12;
@@ -79,35 +86,39 @@ TEST(CommandApduTest, Case3s_data) {
 
     const std::vector<uint8_t> expected{8, 7, 6, 5, 3, 10, 11, 12};
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case3e) {
+TEST(CommandApduTest, Case3e)
+{
     const CommandApdu apdu{8, 7, 6, 5, 256, 0};
     std::vector<uint8_t> expected{8, 7, 6, 5, 0, 1, 0};
     expected.resize(expected.size() + 256, 0);
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case3e_data) {
+TEST(CommandApduTest, Case3e_data)
+{
     CommandApdu apdu{8, 7, 6, 5, 65535, 0};
     ASSERT_EQ(size_t{65535}, apdu.dataSize());
     std::fill(apdu.dataBegin(), apdu.dataEnd(), 7);
     std::vector<uint8_t> expected{8, 7, 6, 5, 0, 255, 255};
     expected.resize(expected.size() + 65535, 7);
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case4s) {
+TEST(CommandApduTest, Case4s)
+{
     const CommandApdu apdu{1, 3, 5, 7, 2, 3};
     const std::vector<uint8_t> expected{1, 3, 5, 7, 2, 0, 0, 3};
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case4s_data) {
+TEST(CommandApduTest, Case4s_data)
+{
     CommandApdu apdu{1, 3, 5, 7, 1, 90};
     auto it = apdu.dataBegin();
     *it++ = 8;
@@ -115,47 +126,52 @@ TEST(CommandApduTest, Case4s_data) {
 
     const std::vector<uint8_t> expected{1, 3, 5, 7, 1, 8, 90};
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case4s_maxLe) {
+TEST(CommandApduTest, Case4s_maxLe)
+{
     const CommandApdu apdu{1, 3, 5, 7, 2, 256};
     const std::vector<uint8_t> expected{1, 3, 5, 7, 2, 0, 0, 0};
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case4e) {
+TEST(CommandApduTest, Case4e)
+{
     const CommandApdu apdu{1, 3, 5, 7, 527, 349};
     std::vector<uint8_t> expected{1, 3, 5, 7, 0, 2, 15};
     expected.resize(expected.size() + 527, 0);
     expected.push_back(1);
     expected.push_back(93);
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
-TEST(CommandApduTest, Case4e_maxLe) {
+TEST(CommandApduTest, Case4e_maxLe)
+{
     const CommandApdu apdu{1, 3, 5, 7, 20, 65536};
     std::vector<uint8_t> expected{1, 3, 5, 7, 0, 0, 20};
     expected.resize(expected.size() + 20, 0);
     expected.push_back(0);
     expected.push_back(0);
     ASSERT_EQ(expected.size(), apdu.size());
-    ASSERT_TRUE(std::equal(apdu.begin(), apdu.end(), expected.begin(), expected.end()));
+    ASSERT_TRUE(std::equal(expected.begin(), expected.end(), apdu.begin()));
 }
 
 /* ResponseApdu */
 
-TEST(ResponseApduTest, bad) {
+TEST(ResponseApduTest, bad)
+{
     const std::vector<uint8_t> empty{};
-    const ResponseApdu<std::vector<uint8_t>> apdu{empty};
+    const ResponseApdu apdu{empty};
     ASSERT_FALSE(apdu.ok());
 }
 
-TEST(ResponseApduTest, statusOnly) {
+TEST(ResponseApduTest, statusOnly)
+{
     const std::vector<uint8_t> statusOnly{0x90, 0x37};
-    const ResponseApdu<std::vector<uint8_t>> apdu{statusOnly};
+    const ResponseApdu apdu{statusOnly};
     ASSERT_TRUE(apdu.ok());
     ASSERT_EQ(0x90, apdu.sw1());
     ASSERT_EQ(0x37, apdu.sw2());
@@ -163,21 +179,22 @@ TEST(ResponseApduTest, statusOnly) {
     ASSERT_EQ(size_t{0}, apdu.dataSize());
 }
 
-TEST(ResponseApduTest, data) {
+TEST(ResponseApduTest, data)
+{
     const std::vector<uint8_t> data{1, 2, 3, 9, 8, 7, 0x3a, 0xbc};
-    const ResponseApdu<std::vector<uint8_t>> apdu{data};
+    const ResponseApdu apdu{data};
     ASSERT_TRUE(apdu.ok());
     ASSERT_EQ(0x3abc, apdu.status());
     ASSERT_EQ(size_t{6}, apdu.dataSize());
 
     const uint8_t expected[] = {1, 2, 3, 9, 8, 7};
-    ASSERT_TRUE(std::equal(apdu.dataBegin(), apdu.dataEnd(),
-                           std::begin(expected), std::end(expected)));
+    ASSERT_TRUE(std::equal(std::begin(expected), std::end(expected), apdu.dataBegin()));
 }
 
-TEST(ResponseApduTest, remainingBytes) {
+TEST(ResponseApduTest, remainingBytes)
+{
     const std::vector<uint8_t> remainingBytes{0x61, 23};
-    const ResponseApdu<std::vector<uint8_t>> apdu{remainingBytes};
+    const ResponseApdu apdu{remainingBytes};
     ASSERT_EQ(23, apdu.remainingBytes());
     ASSERT_FALSE(apdu.isWarning());
     ASSERT_FALSE(apdu.isExecutionError());
@@ -185,27 +202,30 @@ TEST(ResponseApduTest, remainingBytes) {
     ASSERT_FALSE(apdu.isError());
 }
 
-TEST(ResponseApduTest, warning) {
+TEST(ResponseApduTest, warning)
+{
     const std::vector<uint8_t> warning{0x62, 0};
-    const ResponseApdu<std::vector<uint8_t>> apdu{warning};
+    const ResponseApdu apdu{warning};
     ASSERT_TRUE(apdu.isWarning());
     ASSERT_FALSE(apdu.isExecutionError());
     ASSERT_FALSE(apdu.isCheckingError());
     ASSERT_FALSE(apdu.isError());
 }
 
-TEST(ResponseApduTest, executionError) {
+TEST(ResponseApduTest, executionError)
+{
     const std::vector<uint8_t> executionError{0x66, 0};
-    const ResponseApdu<std::vector<uint8_t>> apdu{executionError};
+    const ResponseApdu apdu{executionError};
     ASSERT_FALSE(apdu.isWarning());
     ASSERT_TRUE(apdu.isExecutionError());
     ASSERT_FALSE(apdu.isCheckingError());
     ASSERT_TRUE(apdu.isError());
 }
 
-TEST(ResponseApduTest, checkingError) {
+TEST(ResponseApduTest, checkingError)
+{
     const std::vector<uint8_t> checkingError{0x67, 0};
-    const ResponseApdu<std::vector<uint8_t>> apdu{checkingError};
+    const ResponseApdu apdu{checkingError};
     ASSERT_FALSE(apdu.isWarning());
     ASSERT_FALSE(apdu.isExecutionError());
     ASSERT_TRUE(apdu.isCheckingError());
