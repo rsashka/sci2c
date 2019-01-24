@@ -1,5 +1,5 @@
 /*
-* Copyright (c) Ryabikov Aleksandr <a.ryabikov@afteri.ru> <rsashka@mail.ru>
+* Copyright (c) Ryabikov Aleksandr <a.ryabikov@afteri.ru> or <rsashka@mail.ru>
 * All rights reserved.
 *
 * This code is released under Apache License 2.0. Please see the
