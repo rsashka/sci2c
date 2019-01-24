@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP A7001AG
+D A7001AG
+K NXP A7001AG
+F http://datasheet.elcodis.com/pdf2/99/92/999291/a7001ag.pdf
+$ENDCMP
+#
+#End Doc Library

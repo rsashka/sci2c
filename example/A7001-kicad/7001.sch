@@ -1,0 +1,184 @@
+EESchema Schematic File Version 4
+LIBS:7001-cache
+EELAYER 26 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:R R2
+U 1 1 5C419C73
+P 6100 2200
+F 0 "R2" H 6170 2246 50  0000 L CNN
+F 1 "4.7K" H 6170 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0516_L15.5mm_D5.0mm_P25.40mm_Horizontal" V 6030 2200 50  0001 C CNN
+F 3 "~" H 6100 2200 50  0001 C CNN
+	1    6100 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R1
+U 1 1 5C419D5F
+P 5700 2200
+F 0 "R1" H 5770 2246 50  0000 L CNN
+F 1 "4.7K" H 5770 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0516_L15.5mm_D5.0mm_P25.40mm_Horizontal" V 5630 2200 50  0001 C CNN
+F 3 "~" H 5700 2200 50  0001 C CNN
+	1    5700 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R3
+U 1 1 5C419DA8
+P 6450 2200
+F 0 "R3" H 6520 2246 50  0000 L CNN
+F 1 "10K" H 6520 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0516_L15.5mm_D5.0mm_P25.40mm_Horizontal" V 6380 2200 50  0001 C CNN
+F 3 "~" H 6450 2200 50  0001 C CNN
+	1    6450 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R4
+U 1 1 5C41A080
+P 6450 3200
+F 0 "R4" H 6520 3246 50  0000 L CNN
+F 1 "10K" H 6520 3155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0516_L15.5mm_D5.0mm_P25.40mm_Horizontal" V 6380 3200 50  0001 C CNN
+F 3 "~" H 6450 3200 50  0001 C CNN
+	1    6450 3200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7400 2500 7500 2500
+Wire Wire Line
+	7400 2600 7500 2600
+Wire Wire Line
+	6100 2050 6100 2000
+Wire Wire Line
+	6100 2000 6450 2000
+Wire Wire Line
+	5700 2050 5700 2000
+Wire Wire Line
+	5700 2000 6100 2000
+Connection ~ 6100 2000
+Text GLabel 5400 2600 0    50   Input ~ 0
+SCL
+Text GLabel 5400 2500 0    50   Input ~ 0
+SDA
+Wire Wire Line
+	6450 2050 6450 2000
+Connection ~ 6450 2000
+Wire Wire Line
+	7500 2000 7500 2500
+Wire Wire Line
+	6450 2350 6450 2700
+Wire Wire Line
+	7500 2600 7500 3400
+$Comp
+L 7001-rescue:A7001AG-NXP_A700x U1
+U 1 1 5C41CCA6
+P 7000 2700
+F 0 "U1" H 7000 3165 50  0000 C CNN
+F 1 "A7001AG" H 7000 3074 50  0000 C CNN
+F 2 "Package_DFN_QFN:QFN-32-1EP_5x5mm_P0.5mm_EP3.65x3.65mm_ThermalVias" H 6950 3100 50  0001 C CNN
+F 3 "http://datasheet.elcodis.com/pdf2/99/92/999291/a7001ag.pdf" H 6950 3100 50  0001 C CNN
+	1    7000 2700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:PWR_FLAG #FLG0101
+U 1 1 5C41B234
+P 7000 1950
+F 0 "#FLG0101" H 7000 2025 50  0001 C CNN
+F 1 "PWR_FLAG" H 7000 2124 50  0000 C CNN
+F 2 "" H 7000 1950 50  0001 C CNN
+F 3 "~" H 7000 1950 50  0001 C CNN
+	1    7000 1950
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDPWR #PWR0101
+U 1 1 5C41B2BA
+P 7000 3550
+F 0 "#PWR0101" H 7000 3350 50  0001 C CNN
+F 1 "GNDPWR" H 7004 3396 50  0000 C CNN
+F 2 "" H 7000 3500 50  0001 C CNN
+F 3 "" H 7000 3500 50  0001 C CNN
+	1    7000 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7000 1950 7000 2000
+Wire Wire Line
+	7000 3400 7500 3400
+Connection ~ 7500 2000
+Wire Wire Line
+	7500 1900 7500 2000
+$Comp
+L power:+3.3V #PWR01
+U 1 1 5C41A3F2
+P 7500 1900
+F 0 "#PWR01" H 7500 1750 50  0001 C CNN
+F 1 "+3.3V" H 7515 2073 50  0000 C CNN
+F 2 "" H 7500 1900 50  0001 C CNN
+F 3 "" H 7500 1900 50  0001 C CNN
+	1    7500 1900
+	1    0    0    -1  
+$EndComp
+Connection ~ 7500 3400
+Wire Wire Line
+	7500 3400 7500 3550
+$Comp
+L power:GND #PWR02
+U 1 1 5C41A42A
+P 7500 3550
+F 0 "#PWR02" H 7500 3300 50  0001 C CNN
+F 1 "GND" H 7505 3377 50  0000 C CNN
+F 2 "" H 7500 3550 50  0001 C CNN
+F 3 "" H 7500 3550 50  0001 C CNN
+	1    7500 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7000 3400 7000 3550
+Wire Wire Line
+	6600 2800 6450 2800
+Connection ~ 7000 2000
+Wire Wire Line
+	5400 2500 5700 2500
+Wire Wire Line
+	5400 2600 6100 2600
+Wire Wire Line
+	6100 2350 6100 2600
+Wire Wire Line
+	5700 2350 5700 2500
+Wire Wire Line
+	6450 2000 7000 2000
+Wire Wire Line
+	6450 2800 6450 3050
+Wire Wire Line
+	6450 3350 6450 3400
+Wire Wire Line
+	6450 3400 7000 3400
+Connection ~ 7000 3400
+Wire Wire Line
+	7000 2000 7500 2000
+Wire Wire Line
+	6450 2700 6600 2700
+Wire Wire Line
+	6600 2600 6100 2600
+Connection ~ 6100 2600
+Wire Wire Line
+	5700 2500 6600 2500
+Connection ~ 5700 2500
+$EndSCHEMATC
